@@ -9,6 +9,6 @@ int main(){
 
 int mymult(a, b)  int a,b;
 {
-    int c = a* b;
+    int c = a * b;
     return c;
 }
