@@ -80,3 +80,49 @@ int main(int argc, char *argv[])
         return 1;
     }
 }
+
+// Dynamically allocates enough memory for a CoffeeMAchine type
+int init_coffee_machine(CoffeeMachine **machine)
+{
+    if ((*machine = (CoffeeMachine *)malloc(sizeof(CoffeeMachine))))
+    {
+        return 0;
+    }
+    else
+    {
+        return 1;
+    }
+}
+
+// Pours a decaf cup of Coffee
+int pour_decaf(int duration, CoffeeMachine *machine)
+{
+    int start = 0;
+    Metric **metrics_ptr = (Metric **)malloc(duration * sizeof(Metric));
+    machine->metrics = metrics_ptr;
+
+    while (start < duration)
+    {
+        // Do some Processing of pouring here...
+        float power_used = 4.4;
+
+        Metric *metric = create_metric(power_used);
+        *(metrics_ptr + start) = metric;
+
+        start++;
+    }
+
+    return 0;
+}
+
+//Frees up resources that were allocated in relation to a CoffeMachine
+void cleanup_machine(CoffeeMachine *machine){
+    //Free individual metrics
+    for(int i = 0; i < machine->pour_duration; i++){
+        Metric  *metric =  machine->metrics[i];
+        printf("\n Freeing Metric At Count:  %d\n", metric->sequence_number);
+        free(metric);
+    }
+    free(machine->metrics);
+    free(machine);
+}
